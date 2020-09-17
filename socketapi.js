@@ -13,3 +13,4 @@ socketApi.sendNotification = function () {
 };
 
 module.exports = socketApi;
+// it is used in bin/www and index.js for io
