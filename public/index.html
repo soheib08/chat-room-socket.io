@@ -12,17 +12,24 @@
     <div class="container">
         <br>
         <div class="jumbotron">
-            <div id="messages" style=' height: 300px; padding:  20px ; border: 2px solid #000000; overflow-y: scroll;'>
+            <div class="row">
+                <div class="col-2">
+                    <input id="name" class="form-control" readonly>
+                    <br>
+                </div>
+                <div class="col-8">
+                    <p style="font-size: 24px; transform: translateX(-23px); color: #5a5566;">is chatting </p>
+                </div>
+
+            </div>
+            <div id="messages" style='    background-color: white; height: 300px; padding:  20px ;
+                 border: 2px solid #000000; overflow: auto;'>
 
             </div>
 
             <br>
 
             <div class="row">
-                <div class="col-12">
-                    <input id="name" class="form-control" placeholder="please inter your name">
-                    <br>
-                </div>
                 <div class="col-10">
                     <textarea id="message" class="form-control" placeholder="Your Message Here"></textarea>
                 </div>
@@ -31,19 +38,43 @@
                 </div>
             </div>
         </div>
-        <div id="messages">
 
-        </div>
     </div>
 
+
+
+
     <script>
+
+        function getname() {
+            var person = prompt("Please enter your name:", "Harry Potter");
+            if (person == null || person == "") {
+                alert('you cant chat without a name')
+                getname();
+            } else {
+                alert(' lets chat!  ' + " " + person)
+            }
+            $("#name").val(person.toString());
+        }
+
+    </script>
+
+
+
+    <script>
+        function updateScroll() {
+            var element = document.getElementById("messages");
+            element.scrollTop = element.scrollHeight;
+        }
         var socket = io();
         $(() => {
             $("#send").click(() => {
                 sendMessage({ name: $("#name").val(), message: $("#message").val() });
                 getMessages();
             })
+            getname();
             getMessages();
+            setInterval(updateScroll, 1000);
         })
 
         socket.on('message', addMessages);
